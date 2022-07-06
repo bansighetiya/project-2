@@ -21,5 +21,5 @@
     </main>
     );
 }
-    export default Abouts;
+export default Abouts;
 

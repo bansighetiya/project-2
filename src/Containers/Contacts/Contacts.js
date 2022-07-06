@@ -62,5 +62,5 @@ import React from 'react';
     </main>
     );
 }
-    export default Contact;
+export default Contact;
 

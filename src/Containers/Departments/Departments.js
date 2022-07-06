@@ -112,5 +112,5 @@ import React from 'react';
   </main>
   );
 }
-  export default Departments;
+ export default Departments;
 
