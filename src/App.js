@@ -1,15 +1,14 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import BookAppointment from './Components/Appointment/BookAppointment';
-import ListAppointment from './Components/Appointment/ListAppointment';
+import BookAppointment from './Containers/Appointment/BookAppointment';
+import ListAppointment from './Containers/Appointment/ListAppointment';
 import Footer from './Components/Header/Footer/Footer';
 import Header from './Components/Header/Header';
 import List from './Components/List/List';
 import Abouts from './Containers/Abouts/Abouts';
-import Appointment from './Containers/Appointment/Appointment';
+import Appointment from './Containers/Appointment/BookAppointment';
 import Auth from './Containers/Auth/Auth';
 import Contact from './Containers/Contacts/Contacts';
-import Contacts from './Containers/Contacts/Contacts';
 import Departments from './Containers/Departments/Departments';
 import Docter from './Containers/Doctar/Docter';
 import Home from './Containers/Home/Home';
@@ -23,7 +22,7 @@ function App(props) {
       <>
         <Header />
 
-        <switch>
+        <Switch>
 
           <Route path={"/"} exact component={Home} /> 
           <Route path={"/departments"} exact component={Departments} />
@@ -36,10 +35,10 @@ function App(props) {
           <Route path={"/login_signup"} exact component={Login_Signup} />
           <Route path={"/refexample"} exact component={RefExample} />
           <Route path={"/appointment"} exact component={Appointment} />
-          <Route path={"/book_apt"} exact component={BookAppointment} />
-          <Route path={"/list_apt"} exact component={ListAppointment} />
+          <Route path={"/BookAppointment"} exact component={BookAppointment} />
+          <Route path={"/ListAppointment"} exact component={ListAppointment} />
 
-        </switch>
+        </Switch>
 
         <Footer />
       </>

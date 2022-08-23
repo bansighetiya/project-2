@@ -1,15 +1,17 @@
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import React from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { NavLink } from 'react-router-dom';
-
+import { useHistory} from 'react-router-dom';
 
 function BookAppointment(props) {
 
+    const history = useHistory();
+
     let schema = yup.object().shape({
         name: yup.string().required("plese enter name"),
-        phone: yup.string().required().positive().integer(),
+        phone: yup.string().required("plese enter phone"),
         email: yup.string().email("plese enter email"),
         Message: yup.string().email("plese select Message"),
         department: yup.string().email("plese enter department"),
@@ -35,6 +37,8 @@ function BookAppointment(props) {
             localStorage.setItem("apt", JSON.stringify(LocalData));
         }
 
+        history.push("/ListAppointment");
+
         console.log(LocalData);
     }
 
@@ -43,7 +47,7 @@ function BookAppointment(props) {
                 name: '',
                 phone : '',
                 email: '',
-                Message : '',
+                message : '',
                 department : '',
                 date : ''
             },
@@ -74,7 +78,7 @@ function BookAppointment(props) {
                         </div>
 
                         <Formik values={Formik}>
-                            <form className="php-email-form">
+                            <Form className="php-email-form">
                                 <div className="row">
                                     <div className="col-md-4 form-group">
                                         <input type="text"
@@ -95,8 +99,9 @@ function BookAppointment(props) {
                                             id="email"
                                             placeholder="Your Email"
                                             onSubmit={handleSubmit}
-                                            onBlur={handleBlur}
+                                            onChange={handleChange}
                                         />
+                                        {errors.email && touched.email ? errors.email : ''}
                                         <div className="validate" />
                                     </div>
                                     <div className="col-md-4 form-group mt-3 mt-md-0">
@@ -106,8 +111,9 @@ function BookAppointment(props) {
                                             id="phone"
                                             placeholder="Your Phone"
                                             onSubmit={handleSubmit}
-                                            onBlur={handleBlur}
+                                            onChange={handleChange}
                                         />
+                                        {errors.phone && touched.phone ? errors.phone : ''}
                                         <div className="validate" />
                                     </div>
                                 </div>
@@ -119,8 +125,9 @@ function BookAppointment(props) {
                                             id="date"
                                             placeholder="data"
                                             onSubmit={handleSubmit}
-                                            onBlur={handleBlur}
+                                            onChange={handleChange}
                                         />
+                                        {errors.date && touched.date ? errors.date : ''}
                                         <div className="validate" />
                                     </div>
                                     <div className="col-md-4 form-group mt-3">
@@ -138,8 +145,9 @@ function BookAppointment(props) {
                                     name="message" 
                                     rows={5}
                                     onSubmit={handleSubmit}
-                                    onBlur={handleBlur} 
+                                    onChange={handleChange}
                                     />
+                                    {errors.message && touched.message ? errors.message : ''}
                                     <div className="validate" />
                                 </div>
                                 <div className="mb-3">
@@ -148,7 +156,7 @@ function BookAppointment(props) {
                                     <div className="sent-message">Your appointment request has been sent successfully. Thank you!</div>
                                 </div>
                                 <div className="text-center"><button type="submit">Make an Appointment</button></div>
-                            </form>
+                            </Form>
                         </Formik>
                     </div>
                 </section>
