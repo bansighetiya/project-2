@@ -1,28 +1,29 @@
-import { errors, Formik, Form, useFormik } from 'formik';
+import { Form, Formik, useFormik } from 'formik';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
+import { signInAction, signUpAction } from '../../redux/action/auth.action';
 
-
-function Login_Signup(props) {
-    const [user, setUser] = useState('login');
-    const [reset, setReset] = useState(false)
+function Login(props) {
+    const [usertype, setUsertype] = useState("Login");
+    const [reset, setReset] = useState("false");
 
     let schemaObj, initval;
 
-    if (user === "login") {
+    if (usertype === "Login") {
         schemaObj = {
-            email: yup.string().email("Please enter your email id").required("Please enter a valid email id"),
-            password: yup.string().required("Please enter your password"),
+            email: yup.string().required("Please Enter Email Id.").email("Please Enter Vaild email Id."),
+            password: yup.string().required("Please Enter Password.")
         }
         initval = {
             email: '',
-            password: '',
+            password: ''
         }
-    } else if (user === "Signup") {
+    } else if (usertype === "Signup") {
         schemaObj = {
-            name: yup.string().required("please enter your name."),
-            email: yup.string().email("Please enter your email id").required("Please enter a valid email id"),
-            password: yup.string().required("Please enter your password"),
+            name: yup.string().required("Please enter Name."),
+            email: yup.string().required("Please Enter Email Id.").email("Please Enter Vaild email Id."),
+            password: yup.string().required("Please Enter Password.")
         }
         initval = {
             name: '',
@@ -31,7 +32,7 @@ function Login_Signup(props) {
         }
     } else if (reset == "true") {
         schemaObj = {
-            email: yup.string().email("Please enter your email id").required("Please enter a valid email id"),
+            email: yup.string().required("Please Enter Email Id.").email("Please Enter Vaild email Id.")
         }
         initval = {
             email: ''
@@ -40,97 +41,113 @@ function Login_Signup(props) {
 
     let schema = yup.object().shape(schemaObj);
 
+    const dispatch = useDispatch();
+
+    const insertData = (values) => {
+        // let LocalData = JSON.parse(localStorage.getItem("user"));
+
+        // if (LocalData === null) {
+        //     localStorage.setItem("user", JSON.stringify([values]));
+        // } else {
+        //     LocalData.push(values);
+        //     localStorage.setItem("user", JSON.stringify(LocalData));
+        // }
+
+        // console.log(values);
+        dispatch(signUpAction(values));
+
+    }
+
+    const handleLogin = (values) => {
+        // localStorage.setItem("User", "123");
+        dispatch(signInAction(values));
+    }
+
     const formik = useFormik({
         initialValues: initval,
         validationSchema: schema,
-
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            if(usertype === "Login"){
+                handleLogin(values);
+            }else{
+                insertData(values); 
+            }
         },
+
+        enableReinitialize: true
     });
 
-    const { handleChange, errors, handleSubmit, touched, handleBlur } = formik
+    const { handleChange, errors, handleSubmit, handleBlur, touched } = formik;
 
     return (
-        <center>
-            <section>
-                <div className="container">
-                    <div className="section-title">
-                        {reset === "true" ?
-                            <h2>Forget Password</h2>
+        <section id="appointment" className="appointment">
+            <div className="container">
+                <div className="section-title">
+                    {
+                        reset === "true" ?
+                            <h2>Forgot Password</h2>
                             :
-                            user === "Login" ?
+                            usertype === "Login" ?
                                 <h2>Login</h2>
                                 :
-                                <h2>Signup</h2>
-                        }
-                    </div>
-                    <Formik values={Formik}>
-                        <Form action method="post" role="form" className="php-email-form">
-                            {
-                                reset === "true" ?
-                                    null :
-                                    user === "Login" ?
-                                        null
-                                        :
-                                        <div className="col-md-4 form-group">
-                                            <input onChange={handleChange} type="text" name="name" className="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                                            <div className="validate"></div>
-                                            <p>{errors.name && touched.name ? errors.name: ''}</p>
-                                        </div>
-                            }
-                            <div className="col-md-4 form-group mt-3 mt-md-0">
-                                <input type="email" className="form-control" name="email" id="email" placeholder="Your email" data-rule="email" data-msg="Please enter a valid email" />
-                                <div className="validate"></div>
-                            </div>
-                            {
-                                reset === "true" ?
-                                    null :
-                                    <div className="col-md-4 form-group mt-3 mt-md-0">
-                                        <input type="Email" className="form-control" name="Email" id="Email" placeholder="Your Email" data-rule="minlen:4" data-msg="Please enter valid Email" />
-                                        <div className="validate" />
-                                        <p>{errors.email && touched.email ? errors.email: ''}</p>
-                                    </div>
-                            }
+                                <h2>Sign Up</h2>
+                    }
+                </div>
+                <Formik values={formik}>
+                    <Form onSubmit={handleSubmit} className="php-email-form">
+                        <div className="row">
                             {
                                 reset === "true" ?
                                     null
                                     :
+                                    usertype === "Login" ?
+                                        null
+                                        :
+                                        <div className="col-md-4 form-group">
+                                            <input type="text" name="name" className="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                                                onChange={handleChange} onBlur={handleBlur} />
+                                            <p className='text-danger'>{errors.name && touched.name ? errors.name : ''}</p>
+                                        </div>
+                            }
+                        </div>
+                        <div className='row'>
+                            <div className="col-md-4 form-group mt-3 mt-md-0">
+                                <input type="email" className="form-control" name="email" id="email" placeholder="Your Email" onChange={handleChange} onBlur={handleBlur} />
+                                <p className='text-danger'>{errors.email && touched.email ? errors.email : ''}</p>
+                            </div>
+                        </div>
+                        {
+                            reset === "true" ?
+                                null
+                                :
+                                <div className='row'>
                                     <div className="col-md-4 form-group mt-3 mt-md-0">
-                                            <input onChange={handleChange} onBlur={handleBlur} type="password" name="password" className="form-control" id="password" placeholder="Your password" data-rule="minlen:4" data-msg="Please enter a password" />
-                                        <div className="text-center"><button className='s-btn' type="submit">Login</button></div>
-                                        <br></br>
-                                        <div className="validate" />
-                                        <p>{errors.password && touched.password ? errors.password: ''}</p>
+                                        <input type="password" className="form-control" name="password" id="password" placeholder="Your password" onChange={handleChange} onBlur={handleBlur} />
+                                        <p className='text-danger'>{errors.password && touched.password ? errors.password : ''}</p>
                                     </div>
-                            }
-                            {
-                                user === "Login" ?
-                                    <div className="text-center">
-                                        <br>
-                                        </br>
-                                        <span>Already have an Account
-                                            <a className="signup" onSubmit={handleSubmit} onClick={() => { setReset('false'); setUser("SignUp") }} type="submit">Signup</a>
-                                        </span>
-                                    </div>
+                                </div>
+                        }
+                        {
+                            reset === "true" ?
+                                <div className="text-center"><button type="submit">Submit</button></div>
+                                :
+                                usertype === "Login" ?
+                                    <div className="text-center"><button type="submit">Login</button></div>
                                     :
-                                    <div className="text-center">
-                                        <br>
-                                        </br>
-                                        <span>Create a New Account ?</span>
-                                        <a className="Login" onClick={() => { setReset('false'); setUser("Login") }} type="sumbit">Login</a>
-                                    </div>
-                            }
-                            <br></br>
-                            <div className="text-center">
-                                <a type="submit" className="KELVINSubmit" onClick={() => setReset('true')}>Forget Password</a></div>
-                        </Form>
-                    </Formik>
-                </div>
-            </section>
-        </center>
+                                    <div className="text-center"><button type="submit">Sign UP</button></div>
+                        }
+                        {
+                            usertype === "Login" ?
+                                <p className='mt-4'>create an account ?<a class="sign-up" onClick={() => { setReset("false"); setUsertype("Signup") }}>Signup</a></p>
+                                :
+                                <p className='mt-4'>allready account ?<a class="sign-up" onClick={() => { setReset("false"); setUsertype("Login") }}>Login</a></p>
+                        }
+                        <a class='text-orange' onClick={() => setReset("true")}>Forgot Your Password ?</a>
+                    </Form>
+                </Formik>
+            </div>
+        </section>
     );
 }
 
-
-export default Login_Signup;
+export default Login;
