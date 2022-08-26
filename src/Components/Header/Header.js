@@ -17,6 +17,7 @@ function Header(props) {
                             <a href="#" className="linkedin"><i className="bi bi-linkedin" /></a>
                         </div>
                     </div>
+                    <Alert />
                 </div>
                 <header id="header" className="fixed-top">
                     <div className="container d-flex align-items-center">

@@ -16,5 +16,3 @@ export const store = createStore(
 
 
 sagaMiddleware.run(rootSaga);
-
-// render the application

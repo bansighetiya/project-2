@@ -20,29 +20,30 @@ function App(props) {
   return (
     <div>
       <>
-        <Header />
-
-        <Switch>
-
-          <Route path={"/"} exact component={Home} /> 
-          <Route path={"/departments"} exact component={Departments} />
-          <Route path={"/doctors"} exact component={Docter} />
-          <Route path={"/abouts"} exact component={Abouts} />
-          <Route path={"/contacts"} exact component={Contact} />
-          <Route path={"/auth"} exact component={Auth} />
-          <Route path={"/medicine"} exact component={Medicine} />
-          <Route path={"/list"} exact component={List} />
-          <Route path={"/login_signup"} exact component={Login_Signup} />
-          <Route path={"/refexample"} exact component={RefExample} />
-          <Route path={"/appointment"} exact component={Appointment} />
-          <Route path={"/BookAppointment"} exact component={BookAppointment} />
-          <Route path={"/ListAppointment"} exact component={ListAppointment} />
-
-        </Switch>
-
-        <Footer />
+      <SnackbarProvider maxSnack={3}>
+        <Provider store={store}>
+          <ToggleThemecontext>
+            <Header />
+              <Switch>
+                <Route path={"/"} exact component={Home} /> 
+                <Route path={"/departments"} exact component={Departments} />
+                <Route path={"/doctors"} exact component={Docter} />
+                <Route path={"/abouts"} exact component={Abouts} />
+                <Route path={"/contacts"} exact component={Contact} />
+                <Route path={"/auth"} exact component={Auth} />
+                <Route path={"/medicine"} exact component={Medicine} />
+                <Route path={"/list"} exact component={List} />
+                <Route path={"/login_signup"} exact component={Login_Signup} />
+                <Route path={"/refexample"} exact component={RefExample} />
+                <Route path={"/appointment"} exact component={Appointment} />
+                <Route path={"/BookAppointment"} exact component={BookAppointment} />
+                <Route path={"/ListAppointment"} exact component={ListAppointment} />
+              </Switch>
+            <Footer />
+          </ToggleThemecontext>
+        </Provider>
+      </SnackbarProvider>
       </>
-
     </div>
   );
 }
