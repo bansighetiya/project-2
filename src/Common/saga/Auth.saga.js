@@ -1,6 +1,8 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects'
-import { SignInapi, SignUpapi } from '../../common/api/Auth.api';
+import { SignInapi, SignOutapi, SignUpapi } from '../../common/api/Auth.api';
+import { history } from '../../history';
 import { setAlert } from '../action/alert.action';
+import { signedInAction } from '../action/auth.action';
 import * as ActionType from '../ActionType';
 
 function* SignUp(action) {
@@ -18,6 +20,19 @@ function* SignUp(action) {
 function* SignIn(action) {
   try {
     const user = yield call(SignInapi, action.payload);
+    yield put(signedInAction(user))
+    history.push('/');
+    yield put(setAlert({ text: "Login Is SuccessFully", color: "success" }))
+    console.log(user);
+  } catch (e) {
+    yield put(setAlert({ text: e.payload, color: "error" }))
+    console.log(e);
+  }
+}
+
+function* SignOut(action) {
+  try {
+    const user = yield call(SignOutapi);
     yield put(setAlert({ text: user.payload, color: "success" }))
     console.log(user);
   } catch (e) {
@@ -34,9 +49,14 @@ function* watchSignIn() {
   yield takeEvery(ActionType.SIGN_IN, SignIn);
 }
 
+function* watchSignOut() {
+  yield takeEvery(ActionType.SIGN_OUT, SignOut)
+}
+
 export function* signUpSaga() {
   yield all([
     watchSignUp(),
-    watchSignIn()
+    watchSignIn(),
+    watchSignOut()
   ])
 }
