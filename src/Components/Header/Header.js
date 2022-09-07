@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {    themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../Context/ThemContext';
 import { signOutAction } from '../../redux/action/auth.action';
-import Alert from '../alert/Alert';
+import Alert from '../Alert/Alert';
 import { NavLink } from "react-router-dom";
 
 function Header(props) {
@@ -29,11 +29,11 @@ function Header(props) {
                             <a href="#" className="instagram"><i className="bi bi-instagram" /></a>
                             <a href="#" className="linkedin"><i className="bi bi-linkedin" /></a>
                         </div>
+                        <Alert />
                     </div>
                     <button onClick={() => value.toggle_theme(value.theme)}>
                         Change Theme
                     </button>
-                    <Alert />
                 </div>
                 <header id="header" className="fixed-top">
                     <div className="container d-flex align-items-center">

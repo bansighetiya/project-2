@@ -18,9 +18,10 @@ import Medicine from './Containers/Medicine/Medicine';
 import RefExample from './Containers/RefExample/RefExample';
 import ToggleThemecontext from './context/themeContext';
 import { Provider } from 'react-redux';
-import { persistor, store } from './redux/Store';
+import { persistor, store } from './redux/store';
 import { SnackbarProvider } from 'notistack';
-import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from 'react-redux';
+
 
 function App(props) {
   return (

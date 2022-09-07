@@ -25,8 +25,6 @@ function Alert(props) {
         }
     }, [alert.text])
 
-
-
     return (
         <div>
 
